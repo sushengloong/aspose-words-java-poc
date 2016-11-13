@@ -20,11 +20,11 @@ public class PersonalDocumentGeneratorTest {
     private boolean showClause = false;
 
     private String generatedDocumentOutput() {
-        PersonalDocumentGenerator generator = new PersonalDocumentGenerator(this.name, this.date, this.showClause);
-        generator.generateDocument();
-
-        Document document = generator.getDocument();
+        PersonalDocumentGenerator generator = null;
         try {
+            generator = new PersonalDocumentGenerator(this.name, this.date, this.showClause);
+            generator.generateDocument();
+            Document document = generator.getDocument();
             return document.toString(new TxtSaveOptions());
         } catch (Exception e) {
             e.printStackTrace();

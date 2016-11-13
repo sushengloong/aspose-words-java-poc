@@ -5,6 +5,7 @@ import com.aspose.words.ReportingEngine;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -16,24 +17,20 @@ public class PersonalDocumentGenerator {
     private String date;
     private String showClause;
 
-    private String inputPath;
+    private InputStream inputStream;
     private String outputPath;
 
     private Document document;
 
-    public PersonalDocumentGenerator(String name, Date date, boolean showClause) {
+    public PersonalDocumentGenerator(String name, Date date, boolean showClause) throws Exception {
         this.name = name;
         this.date = new SimpleDateFormat("dd MMM yyyy").format(date);
         this.showClause = String.valueOf(showClause);
 
-        this.inputPath = getInputPath();
+        this.inputStream = getInputStream();
         this.outputPath = getOutputPath();
 
-        try {
-            this.document = new Document(this.inputPath);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        this.document = new Document(this.inputStream);
     }
 
     public Document getDocument() {
@@ -60,10 +57,8 @@ public class PersonalDocumentGenerator {
         }
     }
 
-    private String getInputPath() {
-        String inputPath = App.class.getClassLoader().getResource("template.docx").getPath().toString();
-//        System.out.println("Reading template from " + inputPath);
-        return inputPath;
+    private InputStream getInputStream() {
+        return PersonalDocumentGenerator.class.getClassLoader().getResourceAsStream("template.docx");
     }
 
     private String getOutputPath() {
